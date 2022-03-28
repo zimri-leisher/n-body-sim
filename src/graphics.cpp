@@ -4,9 +4,8 @@
 
 #include "graphics.h"
 #include <SDL.h>
-#include <cstdio>
 #include <string>
-#include <cmath>
+
 void DrawCircle(SDL_Renderer *renderer, int32_t centreX, int32_t centreY, int32_t radius) {
     const int32_t diameter = (radius * 2);
 
