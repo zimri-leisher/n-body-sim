@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include "vec.h"
+#include <stdexcept>
 
 sim::Vec::Vec() : x(0), y(0), z(0) {
 }
@@ -62,3 +63,26 @@ sim::Vec sim::Vec::operator/(double s) const {
 sim::Vec sim::Vec::operator-() const {
     return {-x, -y, -z};
 }
+
+sim::Vec sim::Vec::Cross(sim::Vec &other) const {
+    return {y * other.z - z * other.y,
+            z * other.x - x * other.z,
+            x * other.y - y * other.x};
+}
+
+double sim::Vec::operator[](int i) const {
+    if (i < 0 || i > 2) {
+        throw std::invalid_argument("i must be within [0, 2]");
+    }
+    if (i == 0) {
+        return x;
+    }
+    if (i == 1) {
+        return y;
+    }
+    return z;
+}
+
+//sim::Vec sim::Vec::Copy() const {
+//    return sim::Vec(this);
+//}

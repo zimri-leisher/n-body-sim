@@ -4,8 +4,12 @@
 
 #include <cstdio>
 #include "obj.h"
+#include "sim.h"
+#include "orbit.h"
 #include <cmath>
 #include <memory>
+#include <iostream>
+#include <utility>
 
 void sim::Obj::ApplyForce(sim::Vec &force) {
     auto *newVel = new sim::Vec(
@@ -29,19 +33,18 @@ sim::Obj::~Obj() {
     delete vel;
 }
 
-sim::Obj::Obj(sim::Vec *pos, sim::Vec *vel, double m, double r) : pos(pos), vel(vel), m(m), r(r) {
+sim::Obj::Obj(sim::Vec *pos, sim::Vec *vel, double m, double r, std::string name) : pos(pos), vel(vel), m(m), r(r),
+                                                                                    name(std::move(name)) {
 }
 
 std::shared_ptr<sim::Obj>
-sim::Obj::MakeCircularized(const sim::Obj &around, double orbitalRadius, double mass, double radius) {
+sim::Obj::MakeCircularized(const sim::Obj &around, double orbitalRadius, double mass, double radius, std::string&& name) {
     // v^2 = (G * M_around) / R
-    double vel = std::sqrt((4.98233825e-28 * around.m) / orbitalRadius);
+    double vel = std::sqrt((G * around.m) / orbitalRadius);
     return std::make_shared<sim::Obj>(new sim::Vec{around.pos->x + orbitalRadius, around.pos->y, around.pos->z},
-                                      new sim::Vec{around.vel->x, around.vel->y + vel, around.vel->z}, mass, radius);
+                                      new sim::Vec{around.vel->x, around.vel->y + vel, around.vel->z}, mass, radius, name);
 }
 
 bool sim::Obj::IsCollidingWith(const sim::Obj &other) const {
     return pos->Dist(*other.pos) < r + other.r;
 }
-
-

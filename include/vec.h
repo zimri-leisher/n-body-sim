@@ -30,6 +30,8 @@ namespace sim {
 
         Vec operator*(int) const;
 
+        double operator[](int) const;
+
         Vec Abs() const;
 
         double Len() const;
@@ -37,6 +39,10 @@ namespace sim {
         double Dist(Vec &other) const;
 
         Vec Norm() const;
+
+        Vec Cross(Vec &other) const;
+
+//        Vec Copy() const;
     };
 };
 
