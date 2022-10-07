@@ -38,11 +38,13 @@ sim::Obj::Obj(sim::Vec *pos, sim::Vec *vel, double m, double r, std::string name
 }
 
 std::shared_ptr<sim::Obj>
-sim::Obj::MakeCircularized(const sim::Obj &around, double orbitalRadius, double mass, double radius, std::string&& name) {
+sim::Obj::MakeCircularized(const sim::Obj &around, double orbitalRadius, double mass, double radius,
+                           std::string &&name) {
     // v^2 = (G * M_around) / R
     double vel = std::sqrt((G * around.m) / orbitalRadius);
-    return std::make_shared<sim::Obj>(new sim::Vec{around.pos->x + orbitalRadius, around.pos->y, around.pos->z},
-                                      new sim::Vec{around.vel->x, around.vel->y + vel, around.vel->z}, mass, radius, name);
+    return std::make_shared<sim::Obj>(
+            new sim::Vec{around.pos->GetX() + orbitalRadius, around.pos->GetY(), around.pos->GetZ()},
+            new sim::Vec{around.vel->GetX(), around.vel->GetY() + vel, around.vel->GetZ()}, mass, radius, name);
 }
 
 bool sim::Obj::IsCollidingWith(const sim::Obj &other) const {

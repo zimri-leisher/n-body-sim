@@ -6,25 +6,34 @@
 #define SDL_TUTORIAL_VEC_H
 
 namespace sim {
+    /**
+     * A 3D immutable vector class. Operators work elementwise.
+     */
     class Vec {
-    public:
+    private:
         const double x, y, z;
-
+    public:
         Vec();
 
         Vec(double, double, double);
 
-        Vec operator+(Vec other) const;
+        double GetX() const;
 
-        Vec operator-(Vec other) const;
+        double GetY() const;
+
+        double GetZ() const;
+
+        Vec operator+(const Vec &other) const;
+
+        Vec operator-(const Vec &other) const;
 
         Vec operator-() const;
 
-        Vec operator/(Vec other) const;
+        Vec operator/(const Vec &other) const;
 
         Vec operator/(double) const;
 
-        Vec operator*(Vec &other) const;
+        Vec operator*(const Vec &other) const;
 
         Vec operator*(double) const;
 
@@ -36,13 +45,11 @@ namespace sim {
 
         double Len() const;
 
-        double Dist(Vec &other) const;
+        double Dist(const Vec &other) const;
 
         Vec Norm() const;
 
-        Vec Cross(Vec &other) const;
-
-//        Vec Copy() const;
+        Vec Cross(const Vec &other) const;
     };
 };
 

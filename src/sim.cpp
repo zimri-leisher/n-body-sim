@@ -25,16 +25,16 @@ void sim::Sim::Draw(SDL_Renderer *surface) {
     for (auto &o: objects) {
         sim::Vec objScreenPos = GetScreenCoords(*o->pos);
         SDL_SetRenderDrawColor(surface, 0xFF, 0xFF, 0xFF, 0xFF);
-        sim::graphics::DrawEllipse(surface, int(objScreenPos.x), int(objScreenPos.y),
-                                   int(o->r * scale->x), int(o->r * scale->y));
-        SDL_Rect highlight{int(objScreenPos.x) - 10, int(objScreenPos.y) - 10, 20, 20};
+        sim::graphics::DrawEllipse(surface, int(objScreenPos.GetX()), int(objScreenPos.GetY()),
+                                   int(o->r * scale->GetX()), int(o->r * scale->GetY()));
+        SDL_Rect highlight{int(objScreenPos.GetX()) - 10, int(objScreenPos.GetY()) - 10, 20, 20};
         if (o->orbit != nullptr && o->orbit->valid) {
             SDL_SetRenderDrawColor(surface, 0x33, 0xbb, 0x33, 0xff);
             sim::Vec aroundScreenPos =
                     GetScreenCoords(*o->orbit->around->pos) - o->orbit->eVec->Norm() * *scale * o->orbit->c;
-            sim::graphics::DrawEllipse(surface, int(aroundScreenPos.x), int(aroundScreenPos.y),
-                                       int(o->orbit->a * scale->x),
-                                       int(o->orbit->b * scale->y), o->orbit->argOfPeriapsis);
+            sim::graphics::DrawEllipse(surface, int(aroundScreenPos.GetX()), int(aroundScreenPos.GetY()),
+                                       int(o->orbit->a * scale->GetX()),
+                                       int(o->orbit->b * scale->GetY()), o->orbit->argOfPeriapsis);
         }
         if (o->selected) {
             SDL_SetRenderDrawColor(surface, 0xff, 0xff, 0xff, 0xff);
@@ -125,7 +125,7 @@ void sim::Sim::Init() {
     auto sun = std::make_shared<sim::Obj>(new sim::Vec{0., 0., 0.}, new sim::Vec{0., 0., 0.}, 1.9891e30, 0.696347055,
                                           "sun");
     objects.push_back(sun);
-    for(auto& i : saved) {
+    for (auto &i: saved) {
         i = sun;
     }
     selected = sun;
@@ -152,14 +152,14 @@ sim::Sim::~Sim() {
 }
 
 sim::Vec sim::Sim::GetWorldCoords(sim::Vec &screenCoords) {
-    double x = (screenCoords.x - double(viewportWidth) / 2) / scale->x + following->pos->x;
-    double y = (screenCoords.y - double(viewportHeight) / 2) / scale->y + following->pos->y;
+    double x = (screenCoords.GetX() - double(viewportWidth) / 2) / scale->GetX() + following->pos->GetX();
+    double y = (screenCoords.GetY() - double(viewportHeight) / 2) / scale->GetY() + following->pos->GetY();
     return {x, y, 0.};
 }
 
 sim::Vec sim::Sim::GetScreenCoords(sim::Vec &worldCoords) {
-    double x = (worldCoords.x - following->pos->x) * scale->x + double(viewportWidth) / 2;
-    double y = (worldCoords.y - following->pos->y) * scale->y + double(viewportHeight) / 2;
+    double x = (worldCoords.GetX() - following->pos->GetX()) * scale->GetX() + double(viewportWidth) / 2;
+    double y = (worldCoords.GetY() - following->pos->GetY()) * scale->GetY() + double(viewportHeight) / 2;
     return {x, y, 0.};
 }
 
@@ -176,7 +176,8 @@ sim::Sim::GetObjectAt(sim::Vec &screenCoords) {
     for (auto &obj: objects) {
         sim::Vec objScreenCoords = GetScreenCoords(*obj->pos);
         double dist = std::sqrt(
-                pow(objScreenCoords.x - screenCoords.x, 2.0) + pow(objScreenCoords.y - screenCoords.y, 2.0));
+                pow(objScreenCoords.GetX() - screenCoords.GetX(), 2.0) +
+                pow(objScreenCoords.GetY() - screenCoords.GetY(), 2.0));
         if (dist < bestDist) {
             bestObj = obj;
             bestDist = dist;

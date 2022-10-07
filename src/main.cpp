@@ -1,15 +1,9 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2020)
-and may not be redistributed without written permission.*/
-
-//Using SDL, SDL_image, standard IO, math, and strings
-#include <SDL.h>
 #include <SDL.h>
 #include <cstdio>
 #include <string>
 #include <cmath>
 #include <chrono>
 #include <iostream>
-#include "graphics.h"
 #include "sim.h"
 #include "orbit.h"
 
@@ -70,10 +64,9 @@ double daysPerStepFactor = 1;
 sim::Vec *rightDragStart = nullptr;
 std::shared_ptr<sim::Obj> leftDragStart = nullptr;
 sim::Vec *mousePos = nullptr;
-sim::Vec *spaceDragStart = nullptr;
 
 void processInputOnSelected(SDL_Event &e, std::shared_ptr<sim::Obj> &selected) {
-    if(e.type == SDL_KEYDOWN) {
+    if (e.type == SDL_KEYDOWN) {
         if (e.key.keysym.sym == SDLK_RETURN) {
             sim::GetSimInstance()->following = selected;
         } else if (e.key.keysym.sym >= SDLK_0 && e.key.keysym.sym <= SDLK_9) {
@@ -83,9 +76,6 @@ void processInputOnSelected(SDL_Event &e, std::shared_ptr<sim::Obj> &selected) {
             } else {
                 sim::GetSimInstance()->following = sim::GetSimInstance()->saved[slot];
             }
-        } else if(e.key.keysym.sym == SDLK_SPACE) {
-//            spaceDragStart = sim::GetSimInstance()->following->pos;
-
         }
     }
 }
@@ -194,12 +184,14 @@ int main(int argc, char *args[]) {
             instance->Draw(gRenderer);
             if (rightDragStart != nullptr && mousePos != nullptr) {
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-                SDL_RenderDrawLine(gRenderer, rightDragStart->x, rightDragStart->y, mousePos->x, mousePos->y);
+                SDL_RenderDrawLine(gRenderer, (int) rightDragStart->GetX(), (int) rightDragStart->GetY(),
+                                   (int) mousePos->GetX(), (int) mousePos->GetY());
             }
             if (leftDragStart != nullptr && mousePos != nullptr) {
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                 auto screenCoords = instance->GetScreenCoords(*leftDragStart->pos);
-                SDL_RenderDrawLine(gRenderer, screenCoords.x, screenCoords.y, mousePos->x, mousePos->y);
+                SDL_RenderDrawLine(gRenderer, (int) screenCoords.GetX(), (int) screenCoords.GetY(),
+                                   (int) mousePos->GetX(), (int) mousePos->GetY());
             }
             SDL_RenderPresent(gRenderer);
             double daysPerFrame = pow(1.2, daysPerStepFactor) - 1;

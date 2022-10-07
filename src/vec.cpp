@@ -6,49 +6,51 @@
 #include "vec.h"
 #include <stdexcept>
 
-sim::Vec::Vec() : x(0), y(0), z(0) {
+using namespace sim;
+
+Vec::Vec() : x(0), y(0), z(0) {
 }
 
-sim::Vec::Vec(double x, double y, double z) : x(x), y(y), z(z) {
+Vec::Vec(double x, double y, double z) : x(x), y(y), z(z) {
 }
 
-sim::Vec sim::Vec::operator+(sim::Vec other) const {
+Vec Vec::operator+(const Vec &other) const {
     return {x + other.x, y + other.y, z + other.z};
 }
 
-sim::Vec sim::Vec::operator-(sim::Vec other) const {
+Vec Vec::operator-(const Vec &other) const {
     return {x - other.x, y - other.y, z - other.z};
 }
 
-sim::Vec sim::Vec::operator*(double s) const {
+Vec Vec::operator*(double s) const {
     return {x * s, y * s, z * s};
 }
 
-sim::Vec sim::Vec::operator*(int s) const {
+Vec Vec::operator*(int s) const {
     return {x * double(s), y * double(s), z * double(s)};
 }
 
-sim::Vec sim::Vec::operator/(sim::Vec other) const {
+Vec Vec::operator/(const Vec &other) const {
     return {x / other.x, y / other.y, z / other.z};
 }
 
-sim::Vec sim::Vec::operator*(sim::Vec &other) const {
+Vec Vec::operator*(const Vec &other) const {
     return {x * other.x, y * other.y, z * other.z};
 }
 
-double sim::Vec::Dist(sim::Vec &other) const {
+double Vec::Dist(const Vec &other) const {
     return std::sqrt((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y) + (z - other.z) * (z - other.z));
 }
 
-double sim::Vec::Len() const {
+double Vec::Len() const {
     return std::sqrt(x * x + y * y + z * z);
 }
 
-sim::Vec sim::Vec::Abs() const {
+Vec Vec::Abs() const {
     return {std::abs(x), std::abs(y), std::abs(z)};
 }
 
-sim::Vec sim::Vec::Norm() const {
+Vec Vec::Norm() const {
     double l = Len();
     if (l == 0.) {
         return {0., 0., 0.};
@@ -56,21 +58,21 @@ sim::Vec sim::Vec::Norm() const {
     return {x / l, y / l, z / l};
 }
 
-sim::Vec sim::Vec::operator/(double s) const {
+Vec Vec::operator/(double s) const {
     return {x / s, y / s, z / s};
 }
 
-sim::Vec sim::Vec::operator-() const {
+Vec Vec::operator-() const {
     return {-x, -y, -z};
 }
 
-sim::Vec sim::Vec::Cross(sim::Vec &other) const {
+Vec Vec::Cross(const Vec &other) const {
     return {y * other.z - z * other.y,
             z * other.x - x * other.z,
             x * other.y - y * other.x};
 }
 
-double sim::Vec::operator[](int i) const {
+double Vec::operator[](int i) const {
     if (i < 0 || i > 2) {
         throw std::invalid_argument("i must be within [0, 2]");
     }
@@ -83,6 +85,14 @@ double sim::Vec::operator[](int i) const {
     return z;
 }
 
-//sim::Vec sim::Vec::Copy() const {
-//    return sim::Vec(this);
-//}
+double Vec::GetX() const {
+    return x;
+}
+
+double Vec::GetY() const {
+    return y;
+}
+
+double Vec::GetZ() const {
+    return z;
+}

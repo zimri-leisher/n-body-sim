@@ -3,11 +3,9 @@
 //
 
 #include "graphics.h"
-#include "geometry.h"
 #include "sim.h"
 #include <SDL.h>
 #include <string>
-#include <iostream>
 
 void
 sim::graphics::DrawEllipse(SDL_Renderer *renderer, int32_t centerX, int32_t centerY, int32_t radiusX, int32_t radiusY,

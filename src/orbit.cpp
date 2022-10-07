@@ -59,7 +59,7 @@ sim::Orbit::Orbit(std::shared_ptr<sim::Obj> &s) : satellite(s) {
         e = eVec->Len();
         b = a * sqrt(1 - e * e);
         c = sqrt(a * a - b * b);
-        argOfPeriapsis = atan2(eVec->y, eVec->x);
+        argOfPeriapsis = atan2(eVec->GetY(), eVec->GetX());
         valid = true;
     }
 }
