@@ -2,6 +2,8 @@
 
 n-body simulator written in SDL with a bunch of random features!
 
+See https://www.youtube.com/watch?v=eGq0397CrCc for a demonstration.
+
 * Real time orbit prediction
 * Collisions between bodies
 * Ability to spawn in new bodies
