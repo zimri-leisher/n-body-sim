@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # n-body-sim
 
 n-body simulator written in SDL with a bunch of random features!
